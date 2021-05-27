@@ -78,6 +78,8 @@ const char *appKey = "00000000000000000000000000000000";
 
 #define DHTPIN 2 // Digital pin connected to the DHT sensor
 #define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+
+DHT dht(DHTPIN, DHTTYPE);
 ```
 
 >NOTE: you should have a valid appEui and appKey already from code you created in the `Getting Started with the SODAQ ExpLoRer guide`.
