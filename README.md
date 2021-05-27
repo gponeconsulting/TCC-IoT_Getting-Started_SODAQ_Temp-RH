@@ -8,13 +8,13 @@ This guide is a continuation of the `Getting Started with the SODAQ ExpLoRer Gui
 
 ## What you will need
 To follow this guide, you will The setup from the previous guide, with the addition of:
-- A Keyestudio DHT22 Temperature and Humidity Sensor Module
+- A Keyestudio DHT22 or DHT11 Temperature and Humidity Sensor Module which can be bought [here](https://www.jaycar.com.au/arduino-compatible-temperature-and-humidity-sensor-module/p/XC4520?gclid=EAIaIQobChMI5s3yo7nj8AIViGkqCh06QAoDEAQYASABEgKlt_D_BwE)
 - A breadboard and 3 wires OR some other way to connect the sensor to the SODAQ ExpLoRer
 
-You will still need to be in range of a Gateway connected to The Things Network which you can find out about [here](https://www.thethingsnetwork.org/community).
+You will still need to be in range of a Gateway connected to The Things Stack which you can find out about [here](https://www.thethingsnetwork.org/community).
 
 ## Step 1 - Install Library
-Install a library to help use the soil moisture sensor.
+Install a library to help use the temperature & humidity sensor.
 
 In the Arduino IDE:
 - Go to `Tools -> Manage Libraries`
@@ -22,7 +22,7 @@ In the Arduino IDE:
 - Install the `DHT sensor library` library
     - If asked to _install missing dependencies?_, choose _Install all_
 
-![Install Soil Moisture Library](readme-images/library.png)
+![Install Temperature & Humidity Library](readme-images/library.png)
 
 ## Step 2 - Setup the board
 To connect the sensor to the SODAQ ExpLoRer we will be using a breadboard.
@@ -31,9 +31,11 @@ A breadboard has a number of rows typically labelled with numbers and a number o
 
 Building on the setup completed in `Getting Started with the SODAQ ExpLoRer guide`:
 
-1. Insert the pins from the DHT22
+Different sensors can sometimes have different pin positions, if the pins are not clearly labelled check the datasheet from the supplier to identify the ground, VCC/5V, and data pins.
+
+1. Insert the pins from the DHT22 or DHT 11
     - Each leg should be in a different row, but the same column.
-1. In the same numbered row that the sensors GND pin is connected to insert a wire into the breadboard and connect it to one of the GND sockets on the SODAQ ExpLoRer.
+1. In the same numbered row that the sensors GND pin (or the pin labled `-`) is connected to, insert a wire into the breadboard and connect it to one of the GND sockets on the SODAQ ExpLoRer.
 1. In the same numbered row that the sensors VCC pin is connected to insert a wire into the breadboard and connect it to the 5V socket on the SODAQ ExpLoRer.
 1. In the same numbered row that the sensors S (or DAT) pin is connected to insert a wire into the breadboard and connect it to the D2 socket on the SODAQ ExpLoRer.
 
@@ -56,6 +58,7 @@ After the `#define freqPlan TTN_FP_AU915` line include the following:
 
 DHT dht(DHTPIN, DHTTYPE);
 ```
+If you are using a DHT 11 sensor instead of a DHT 22 sensor, change `#define DHTTYPE DHT22` to `#define DHTTYPE DHT11`
 
 The first few lines of the program should now look like this:
 
@@ -184,7 +187,7 @@ You can also now go to the `Data` tab on your The Things Network application to 
 ## Step 4 - Decoding the message
 Now that we have encoded the message and sent it to The Things Network we need to tell the things network what to do with it.
 
-In your application on The Things Network, go to the tab named `Payload Formats`. In here we can write code to decrypt the data we get from our device.
+In your application on The Things Stack, go to the tab named `Payload Formatters` then select `Javascript` from the dropdown. In here we can write code to decrypt the data we get from our device.
 
 Enter the following into the decoder:
 ```C++
@@ -219,10 +222,10 @@ Finally the numbers are returned as field 1, field 2 and field 3.
 
 ![Decode](readme-images/decoder.png)
 
-Be sure to click the `save payload functions` button at the bottom!
+Be sure to click the `save changes` button at the bottom!
 
 ### The Decoded Message
 
-You can also now go to the `Data` tab on your The Things Network application to see the data being sent, just like before, but now the "decoded" values are shown as well.
+You can also now go to the `Live Data` tab on your The Things Network application to see the data being sent, just like before, but now the "decoded" values are shown as well.
 
 ![Decoded Payload](readme-images/decoded-payload.png)
